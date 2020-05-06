@@ -61,7 +61,7 @@ public class BatchConfiguration {
 	}
 
 	@Bean
-	private LineMapper<Transaction> lineMapper() {
+	public LineMapper<Transaction> lineMapper() {
 
 		DefaultLineMapper<Transaction> defaultLineMapper = new DefaultLineMapper<>();
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
@@ -69,12 +69,13 @@ public class BatchConfiguration {
 		lineTokenizer.setDelimiter(",");
 		lineTokenizer.setStrict(false);
 		
-		lineTokenizer.setNames(new String[] { "id", "stepTime", "type", "amount", "nameOrig",
-				 "oldBalanceOrig", "newBalanceOrig", "nameDest", "oldBalanceDest",
+		lineTokenizer.setNames(new String[] { "step", "type", "amount", "nameOrig",
+				 "oldBalanceOrg", "newBalanceOrig", "nameDest", "oldBalanceDest",
 				 "newBalanceDest", "isFraud", "isFlaggedFraud" });
 		
 		BeanWrapperFieldSetMapper<Transaction> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
 		fieldSetMapper.setTargetType(Transaction.class);
+		fieldSetMapper.setDistanceLimit(0);
 		
 		defaultLineMapper.setLineTokenizer(lineTokenizer);
 		defaultLineMapper.setFieldSetMapper(fieldSetMapper);

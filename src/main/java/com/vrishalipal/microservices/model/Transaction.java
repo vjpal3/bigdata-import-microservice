@@ -16,7 +16,7 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private Integer stepTime;
+	private Integer step;
 	
 	@Column(length = 10)
 	private String type;
@@ -26,7 +26,7 @@ public class Transaction {
 	@Column(length = 32)
 	private String nameOrig;
 	
-	private BigDecimal oldBalanceOrig;
+	private BigDecimal oldBalanceOrg;
 	
 	private BigDecimal newBalanceOrig;
 	
@@ -37,32 +37,31 @@ public class Transaction {
 	
 	private BigDecimal newBalanceDest;
 	
-	private Boolean isFraud;
+	private Integer isFraud;
 	
-	private Boolean isFlaggedFraud;
+	private Integer isFlaggedFraud;
 	
-	private Instant entryDate;
+	
 	
 	public Transaction() {
 	}
 	
-	public Transaction(Long id, Integer stepTime, String type, BigDecimal amount, String nameOrig,
+	public Transaction(Integer step, String type, BigDecimal amount, String nameOrig,
 			BigDecimal oldBalanceOrig, BigDecimal newBalanceOrig, String nameDest, BigDecimal oldBalanceDest,
-			BigDecimal newBalanceDest, Boolean isFraud, Boolean isFlaggedFraud, Instant entryDate) {
+			BigDecimal newBalanceDest, Integer isFraud, Integer isFlaggedFraud) {
 		super();
-		this.id = id;
-		this.stepTime = stepTime;
+		this.step = step;
 		this.type = type;
 		this.amount = amount;
 		this.nameOrig = nameOrig;
-		this.oldBalanceOrig = oldBalanceOrig;
+		this.oldBalanceOrg = oldBalanceOrig;
 		this.newBalanceOrig = newBalanceOrig;
 		this.nameDest = nameDest;
 		this.oldBalanceDest = oldBalanceDest;
 		this.newBalanceDest = newBalanceDest;
 		this.isFraud = isFraud;
 		this.isFlaggedFraud = isFlaggedFraud;
-		this.entryDate = entryDate;
+		
 	}
 	
 	public Long getId() {
@@ -73,12 +72,12 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public Integer getStepTime() {
-		return stepTime;
+	public Integer getStep() {
+		return step;
 	}
 
-	public void setStepTime(Integer step) {
-		this.stepTime = step;
+	public void setStep(Integer step) {
+		this.step = step;
 	}
 
 	public String getType() {
@@ -105,12 +104,12 @@ public class Transaction {
 		this.nameOrig = nameOrig;
 	}
 
-	public BigDecimal getOldBalanceOrig() {
-		return oldBalanceOrig;
+	public BigDecimal getOldBalanceOrg() {
+		return oldBalanceOrg;
 	}
 
-	public void setOldBalanceOrig(BigDecimal oldBalanceOrig) {
-		this.oldBalanceOrig = oldBalanceOrig;
+	public void setOldBalanceOrg(BigDecimal oldBalanceOrig) {
+		this.oldBalanceOrg = oldBalanceOrig;
 	}
 
 	public BigDecimal getNewBalanceOrig() {
@@ -145,36 +144,28 @@ public class Transaction {
 		this.newBalanceDest = newBalanceDest;
 	}
 
-	public Boolean getIsFraud() {
+	public Integer getIsFraud() {
 		return isFraud;
 	}
 
-	public void setIsFraud(Boolean isFraud) {
+	public void setIsFraud(Integer isFraud) {
 		this.isFraud = isFraud;
 	}
 
-	public Boolean getIsFlaggedFraud() {
+	public Integer getIsFlaggedFraud() {
 		return isFlaggedFraud;
 	}
 
-	public void setIsFlaggedFraud(Boolean isFlaggedFraud) {
+	public void setIsFlaggedFraud(Integer isFlaggedFraud) {
 		this.isFlaggedFraud = isFlaggedFraud;
-	}
-
-	public Instant getEntryDate() {
-		return entryDate;
-	}
-
-	public void setEntryDate(Instant entryDate) {
-		this.entryDate = entryDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Transaction [id=" + id + ", step=" + stepTime + ", type=" + type + ", amount=" + amount + ", nameOrig="
-				+ nameOrig + ", oldBalanceOrig=" + oldBalanceOrig + ", newBalanceOrig=" + newBalanceOrig + ", nameDest="
+		return "Transaction [id=" + id + ", step=" + step + ", type=" + type + ", amount=" + amount + ", nameOrig="
+				+ nameOrig + ", oldBalanceOrg=" + oldBalanceOrg + ", newBalanceOrig=" + newBalanceOrig + ", nameDest="
 				+ nameDest + ", oldBalanceDest=" + oldBalanceDest + ", newBalanceDest=" + newBalanceDest + ", isFraud="
-				+ isFraud + ", isFlaggedFraud=" + isFlaggedFraud + ", entryDate=" + entryDate + "]";
+				+ isFraud + ", isFlaggedFraud=" + isFlaggedFraud + "]";
 	}
 	
 	
