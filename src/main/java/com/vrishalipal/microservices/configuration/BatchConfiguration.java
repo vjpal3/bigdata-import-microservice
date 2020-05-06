@@ -51,7 +51,7 @@ public class BatchConfiguration {
 		
 		FlatFileItemReader<Transaction> flatFileItemReader = new FlatFileItemReader<>();
 		
-		flatFileItemReader.setResource(new ClassPathResource("data/PS_Sample_log.csv"));
+		flatFileItemReader.setResource(new ClassPathResource("data/PS_20174392719_1491204439457_log.csv"));
 		flatFileItemReader.setName("MMCSV-Reader");
 		flatFileItemReader.setLinesToSkip(1);
 		flatFileItemReader.setLineMapper(lineMapper());
