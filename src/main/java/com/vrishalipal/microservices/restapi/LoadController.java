@@ -34,6 +34,8 @@ public class LoadController {
 		Map<String, JobParameter> map = new HashMap<>();
 		map.put("time", new JobParameter(System.currentTimeMillis()));
 		
+		long startTime = System.currentTimeMillis();
+		
 		JobExecution jobExecution = jobLauncher.run(job, new JobParameters(map));
 		
 		System.out.println("JobExecution: " + jobExecution.getStatus());
@@ -43,7 +45,10 @@ public class LoadController {
         while (jobExecution.isRunning()) {
             System.out.println("...");
         }
-
+        
+        long endTime = System.currentTimeMillis();
+        System.out.println("Total execution time: " + (endTime-startTime) + "ms"); 
+        
         return jobExecution.getStatus();
 	}
 	
