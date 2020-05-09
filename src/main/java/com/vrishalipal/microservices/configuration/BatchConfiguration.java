@@ -20,6 +20,9 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.vrishalipal.microservices.model.Transaction;
 
@@ -28,16 +31,21 @@ import com.vrishalipal.microservices.model.Transaction;
 @EnableBatchProcessing
 public class BatchConfiguration {
 	
+	private static final int THREAD_NUMBER = 25;
+	private static final int CHUNK_SIZE = 1000;
+	
 	@Bean
 	public Job job(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
 			ItemReader<Transaction> itemReader, ItemProcessor<Transaction, Transaction> itemProcessor,
 			ItemWriter<Transaction> itemWriter) {
 		
 		Step step = stepBuilderFactory.get("MMTransaction-file-load")
-				.<Transaction, Transaction>chunk(1000)
+				.<Transaction, Transaction>chunk(CHUNK_SIZE)
 				.reader(itemReader)
 				.processor(itemProcessor)
 				.writer(itemWriter)
+				.taskExecutor(taskExecutor())
+//				.throttleLimit(THREAD_NUMBER)
 				.build();
 		
 		return jobBuilderFactory.get("MMTransaction-load")
@@ -47,17 +55,32 @@ public class BatchConfiguration {
 	}
 	
 	@Bean
+	public TaskExecutor taskExecutor() {
+		
+		//SimpleAsyncTaskExecutor simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor();
+		//simpleAsyncTaskExecutor.setConcurrencyLimit(THREAD_NUMBER);
+		//return simpleAsyncTaskExecutor;
+		
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	    int executorsPoolSize = 25;
+		executor.setMaxPoolSize(executorsPoolSize );
+	    executor.setCorePoolSize(executorsPoolSize);
+	    return executor;
+	}
+
+	@Bean
 	public FlatFileItemReader<Transaction> itemReader() {
 		
 		FlatFileItemReader<Transaction> flatFileItemReader = new FlatFileItemReader<>();
 		
 		flatFileItemReader.setResource(new ClassPathResource("data/PS_20174392719_1491204439457_log.csv"));
+//		flatFileItemReader.setResource(new ClassPathResource("data/PS_Sample_log.csv"));
+		
 		flatFileItemReader.setName("MMCSV-Reader");
 		flatFileItemReader.setLinesToSkip(1);
 		flatFileItemReader.setLineMapper(lineMapper());
 		
 		return flatFileItemReader;
-		
 	}
 
 	@Bean
