@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/load")
+@RequestMapping("/api/bigdata")
 public class LoadController {
 	
 	@Autowired
@@ -28,7 +28,7 @@ public class LoadController {
 	@Autowired
 	Job job;
 
-	@GetMapping
+	@GetMapping("/load")
 	public BatchStatus load() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException  {
 		
 		Map<String, JobParameter> map = new HashMap<>();
@@ -42,9 +42,9 @@ public class LoadController {
 		
 		System.out.println("Batch is Running...");
 		
-        while (jobExecution.isRunning()) {
-            System.out.println("...");
-        }
+//        while (jobExecution.isRunning()) {
+//            System.out.println("...");
+//        }
         
         long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime-startTime) + "ms"); 
