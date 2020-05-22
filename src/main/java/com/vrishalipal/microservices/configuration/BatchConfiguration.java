@@ -32,7 +32,7 @@ import com.vrishalipal.microservices.model.Transaction;
 public class BatchConfiguration {
 	
 	private static final int THREAD_NUMBER = 25;
-	private static final int CHUNK_SIZE = 1000;
+	private static final int CHUNK_SIZE = 100000;
 	
 	@Bean
 	public Job job(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
@@ -57,15 +57,15 @@ public class BatchConfiguration {
 	@Bean
 	public TaskExecutor taskExecutor() {
 		
-		//SimpleAsyncTaskExecutor simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor();
-		//simpleAsyncTaskExecutor.setConcurrencyLimit(THREAD_NUMBER);
-		//return simpleAsyncTaskExecutor;
+		SimpleAsyncTaskExecutor simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor();
+		simpleAsyncTaskExecutor.setConcurrencyLimit(THREAD_NUMBER);
+		return simpleAsyncTaskExecutor;
 		
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	    int executorsPoolSize = 25;
-		executor.setMaxPoolSize(executorsPoolSize );
-	    executor.setCorePoolSize(executorsPoolSize);
-	    return executor;
+//		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//	    int executorsPoolSize = 25;
+//		executor.setMaxPoolSize(executorsPoolSize );
+//	    executor.setCorePoolSize(executorsPoolSize);
+//	    return executor;
 	}
 
 	@Bean
