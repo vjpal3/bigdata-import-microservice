@@ -1,7 +1,5 @@
 package com.vrishalipal.microservices.configuration;
 
-import java.math.BigDecimal;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -13,7 +11,6 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
@@ -26,12 +23,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.vrishalipal.microservices.model.Transaction;
 
-
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
-	
-	private static final int THREAD_NUMBER = 25;
 	private static final int CHUNK_SIZE = 100000;
 	
 	@Bean
@@ -45,27 +39,29 @@ public class BatchConfiguration {
 				.processor(itemProcessor)
 				.writer(itemWriter)
 				.taskExecutor(taskExecutor())
-//				.throttleLimit(THREAD_NUMBER)
 				.build();
 		
 		return jobBuilderFactory.get("MMTransaction-load")
 				.incrementer(new RunIdIncrementer())
-				.start(step)
+				.flow(step)
+				.end()
 				.build();
 	}
 	
 	@Bean
 	public TaskExecutor taskExecutor() {
 		
-		SimpleAsyncTaskExecutor simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor();
-		simpleAsyncTaskExecutor.setConcurrencyLimit(THREAD_NUMBER);
-		return simpleAsyncTaskExecutor;
+//		SimpleAsyncTaskExecutor simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor();
+//		simpleAsyncTaskExecutor.setConcurrencyLimit(THREAD_NUMBER);
+//		return simpleAsyncTaskExecutor;
 		
-//		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-//	    int executorsPoolSize = 25;
-//		executor.setMaxPoolSize(executorsPoolSize );
-//	    executor.setCorePoolSize(executorsPoolSize);
-//	    return executor;
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	    int executorsPoolSize = 30;
+		executor.setMaxPoolSize(executorsPoolSize );
+	    executor.setCorePoolSize(executorsPoolSize);
+		executor.setQueueCapacity(10);
+		executor.afterPropertiesSet();
+	    return executor;
 	}
 
 	@Bean
@@ -105,5 +101,4 @@ public class BatchConfiguration {
 		
 		return defaultLineMapper;
 	}
-
 }
