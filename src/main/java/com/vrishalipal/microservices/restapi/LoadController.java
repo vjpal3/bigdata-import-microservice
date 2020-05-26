@@ -3,7 +3,6 @@ package com.vrishalipal.microservices.restapi;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
@@ -14,6 +13,8 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,33 +24,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoadController {
 	
 	@Autowired
-	private JobLauncher jobLauncher;
+	private JobLauncher asyncJobLauncher;
 	
 	@Autowired
 	Job job;
 
 	@GetMapping("/load")
-	public BatchStatus load() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException  {
-		
-		Map<String, JobParameter> map = new HashMap<>();
-		map.put("time", new JobParameter(System.currentTimeMillis()));
-		
-		long startTime = System.currentTimeMillis();
-		
-		JobExecution jobExecution = jobLauncher.run(job, new JobParameters(map));
-		
-		System.out.println("JobExecution: " + jobExecution.getStatus());
-		
-		System.out.println("Batch is Running...");
-		
-//        while (jobExecution.isRunning()) {
-//            System.out.println("...");
-//        }
-        
-        long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time: " + (endTime-startTime) + "ms"); 
-        
-        return jobExecution.getStatus();
-	}
-	
+//	public BatchStatus load() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException  {
+	public ResponseEntity<?> load() {	
+		try {
+			
+			Map<String, JobParameter> map = new HashMap<>();
+			map.put("time", new JobParameter(System.currentTimeMillis()));
+					
+			String message = "Job Successfully Started....";
+			
+//			JobExecution jobExecution = jobLauncher.run(job, new JobParameters(map));
+			asyncJobLauncher.run(job, new JobParameters(map));       
+	        	        
+	        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\""+message+"\"}");
+	        	        
+		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+			    | JobParametersInvalidException e) {
+			e.printStackTrace();
+			String message = "Error Processing Job";	
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\""+message+"\"}");
+		}		
+	}	
 }
