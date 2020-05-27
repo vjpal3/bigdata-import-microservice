@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vrishalipal.microservices.fileutilities.SplitBigFile;
+
 @RestController
 @RequestMapping("/api/bigdata")
 public class LoadController {
@@ -33,6 +35,8 @@ public class LoadController {
 //	public BatchStatus load() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException  {
 	public ResponseEntity<?> load() {	
 		try {
+			
+			SplitBigFile.startSplit();
 			
 			Map<String, JobParameter> map = new HashMap<>();
 			map.put("time", new JobParameter(System.currentTimeMillis()));
