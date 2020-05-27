@@ -23,8 +23,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.vrishalipal.microservices.model.Transaction;
 
-@Configuration
-@EnableBatchProcessing
+//@Configuration
+//@EnableBatchProcessing
 public class BatchConfiguration {
 	private static final int CHUNK_SIZE = 5000;
 	
