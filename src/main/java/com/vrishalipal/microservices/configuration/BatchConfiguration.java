@@ -26,7 +26,7 @@ import com.vrishalipal.microservices.model.Transaction;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
-	private static final int CHUNK_SIZE = 100000;
+	private static final int CHUNK_SIZE = 5000;
 	
 	@Bean
 	public Job job(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
@@ -56,7 +56,7 @@ public class BatchConfiguration {
 //		return simpleAsyncTaskExecutor;
 		
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	    int executorsPoolSize = 30;
+	    int executorsPoolSize = 20;
 		executor.setMaxPoolSize(executorsPoolSize );
 	    executor.setCorePoolSize(executorsPoolSize);
 		executor.setQueueCapacity(10);
