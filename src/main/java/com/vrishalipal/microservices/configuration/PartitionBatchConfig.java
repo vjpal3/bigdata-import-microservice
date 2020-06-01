@@ -37,6 +37,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.vrishalipal.microservices.batch.DBWriter;
+import com.vrishalipal.microservices.batch.JobCompletionNotificationListener;
 import com.vrishalipal.microservices.batch.Processor;
 import com.vrishalipal.microservices.model.Transaction;
 
@@ -89,10 +90,10 @@ public class PartitionBatchConfig {
     }
     
     @Bean
-	public Job job(Step step1) {
+	public Job job(JobCompletionNotificationListener listener) {
 		return jobBuilderFactory.get("MMTransaction-load")
 				.incrementer(new RunIdIncrementer())
-//				.listener(listener)
+				.listener(listener)
 				.flow(masterStep())
 				.end()
 				.build();
