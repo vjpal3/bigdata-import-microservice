@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
+import com.vrishalipal.microservices.services.ImportServiceProxy;
+
 @Component
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
 	
@@ -17,11 +19,18 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 	@Autowired
 	ThreadPoolTaskExecutor taskExcutor;
 	
+	@Autowired
+	private ImportServiceProxy proxy;
+	
 	@Override
 	public void afterJob(JobExecution jobExecution) {
 	
 		if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
 			log.info("!!! JOB FINISHED! Time to call Reports Service");
+			
+			//Call Report microservice
+			String response = proxy.generatePDFHtmlReports();
+			log.info("Report Service -> {}", response);
 		}	
 		
 		taskExcutor.shutdown();
