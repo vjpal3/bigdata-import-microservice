@@ -46,7 +46,8 @@ public class PartitionBatchConfig {
 	
 	private static final Logger log = LoggerFactory.getLogger(PartitionBatchConfig.class);
 	
-	private static final int GRID_SIZE = 16;
+//	private static final int GRID_SIZE = 16;
+	private static final int GRID_SIZE = 4;
 	private static final int MAX_POOL_SIZE = 16;
 	private static final int CORE_POOL_SIZE = 10;
 	private static final int QUEUE_CAPACITY = 10;

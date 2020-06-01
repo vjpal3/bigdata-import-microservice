@@ -18,7 +18,8 @@ import org.springframework.core.io.ResourceLoader;
 
 public class SplitBigFile {
 	
-	private static final int SPLIT_COUNT = 400000;
+//	private static final int SPLIT_COUNT = 400000;
+	private static final int SPLIT_COUNT = 2;
 	
 	public static void startSplit() {
 		readLargeFileAndSplit();
@@ -27,7 +28,8 @@ public class SplitBigFile {
 	public static void readLargeFileAndSplit() {
 		
 		StringBuilder text = new StringBuilder();	
-		ClassPathResource inputPathResource = new ClassPathResource("data/PS_20174392719_1491204439457_log.csv");
+//		ClassPathResource inputPathResource = new ClassPathResource("data/PS_20174392719_1491204439457_log.csv");
+		ClassPathResource inputPathResource = new ClassPathResource("data/PS_Sample_log.csv");
 		
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(
 				inputPathResource.getInputStream()))) {
@@ -59,7 +61,8 @@ public class SplitBigFile {
 	
 	public static void writeSmallFile(String text, int fileCount) throws IOException {
 		
-		String filenameSuffix = "PS_20174392719_1491204439457_log_Part_";
+//		String filenameSuffix = "PS_20174392719_1491204439457_log_Part_";
+		String filenameSuffix = "PS_Sample_log_Part_";
 		String newFilename = filenameSuffix + fileCount + ".csv";
 		
 		File file = new File(newFilename);
