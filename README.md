@@ -8,7 +8,7 @@
   - [Reports microservice - Repo](https://github.com/vjpal3/Bigdata-Reports-Service)
   - Based on this data, a fraud detection model is built using python machine learning libraries. 
   - [Python fraud-detection microservice - Repo](https://github.com/vjpal3/Fraud-Detection-PythonML-Service)
-  - [Other microservices in this architecure](https://github.com/vjpal3/Bigdata-Microservices-Spring-Cloud-Repos)
+  - [Other microservices in this architecture](https://github.com/vjpal3/Bigdata-Microservices-Spring-Cloud-Repos)
 
   ### Built with:
   - Java
@@ -18,3 +18,4 @@
   - PostgreSQL
   - Spring cloud OpenFeign
   - Netflix Hystrix
+  - REST API
