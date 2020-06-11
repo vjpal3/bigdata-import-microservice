@@ -15,6 +15,7 @@
   - Spring Boot
   - Spring Batch
   - Spring Data JPA-Hibernate
+  - Maven
   - PostgreSQL
   - Spring cloud OpenFeign
   - Netflix Hystrix
