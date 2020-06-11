@@ -4,4 +4,15 @@
   - Scaling and parellel processing is achieved through Spring Batch step partitioning and multi-threading.
   - After importing the data to the database, the job completion event-listener invokes another microservice using Spring Cloud OpenFeign, a declarative REST client, to generate reports.
   - Netflix Hystrix is used to provide fault-tolerance and fallback mechanism when making a call to reports microservice.
-  - [The code for reports microservice service: ] (https://github.com/vjpal3/Bigdata-Reports-Service)
+  - [Reports microservice - Repo](https://github.com/vjpal3/Bigdata-Reports-Service)
+  - Based on this data, a fraud detection model is built using python machine learning libraries. 
+  - [Python fraud-detection microservice - Repo](https://github.com/vjpal3/Fraud-Detection-PythonML-Service)
+
+  ### Built with:
+  - Java
+  - Spring Boot
+  - Spring Batch
+  - Spring Data JPA-Hibernate
+  - PostgreSQL
+  - Spring cloud OpenFeign
+  - Netflix Hystrix
